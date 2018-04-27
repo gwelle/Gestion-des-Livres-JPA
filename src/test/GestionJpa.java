@@ -31,16 +31,13 @@ public class GestionJpa {
 //        modele.createAdherent("WELLE", "Guillaume");
 //        modele.createAdherent("FUREAU", "Guillaume");
 
-//        modele.emprunterUnLivre(1, 1);
-//        modele.emprunterUnLivre(1, 5);
+        modele.emprunterUnLivre(1, 1);
+        //modele.emprunterUnLivre(1, 1);
 //        modele.emprunterUnLivre(3, 4);
 //        modele.emprunterUnLivre(2, 3);
         //modele.rendreUnLivre(9, 1, 1);
         
-          modele.listeDesLivresEmprunter();
-         
-        
-          
+          //modele.listeDesLivresEmprunter();
         } 
 
     /**

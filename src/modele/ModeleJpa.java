@@ -601,8 +601,7 @@ public class ModeleJpa {
             
             emf.close();
         }
-            
-        
+
         return listeDesLivresEmprunter ;
     }
 }
