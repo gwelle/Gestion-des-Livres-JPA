@@ -2,7 +2,7 @@
 package test;
 
 import controller.exceptions.NonexistentEntityException;
-import modele.ModeleJpa;
+import dao.Dao;
 
 /**
  *
@@ -10,14 +10,14 @@ import modele.ModeleJpa;
  */
 public class GestionJpa {
     
-    private final ModeleJpa modele;
+    private final Dao modele;
     
     /**
      * Tester les Fonctionnalités
      * @throws NonexistentEntityException 
      */
     public GestionJpa() throws NonexistentEntityException{
-        this.modele = new ModeleJpa();
+        this.modele = new Dao();
 
 //        modele.createLivre("Persistance des Données avec JPA", "Fabien Luciel");
 //        modele.createLivre("Symfony2/3", "Fabien Luciel");
@@ -31,13 +31,19 @@ public class GestionJpa {
 //        modele.createAdherent("WELLE", "Guillaume");
 //        modele.createAdherent("FUREAU", "Guillaume");
 
-        modele.emprunterUnLivre(1, 1);
         //modele.emprunterUnLivre(1, 1);
-//        modele.emprunterUnLivre(3, 4);
+        //modele.emprunterUnLivre(2, 1 );
 //        modele.emprunterUnLivre(2, 3);
         //modele.rendreUnLivre(9, 1, 1);
         
           //modele.listeDesLivresEmprunter();
+        
+        //modele.emprunterDesLivres(1, 1);
+        //modele.emprunterDesLivres(2, 1);
+        //modele.emprunterDesLivres(1, 3);
+        modele.emprunterDesLivres(1, 1);
+
+        
         } 
 
     /**

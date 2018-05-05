@@ -1,12 +1,15 @@
 
-package modele;
+package dao;
 
 import controller.exceptions.NonexistentEntityException;
 import entities.Adherent;
 import entities.Emprunter;
 import entities.Livre;
 import test.GestionJpa;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -21,7 +24,7 @@ import javax.persistence.Query;
  *
  * @author Olga
  */
-public class ModeleJpa {
+public class Dao {
     
         /**
          * Créer une Entité Livre
@@ -398,24 +401,29 @@ public class ModeleJpa {
             EntityTransaction tx = em.getTransaction();
             tx.begin();
             
+            
             unLivre = em.getReference(entities.Livre.class, idLivre);
             unAdherent = em.getReference(entities.Adherent.class, idAdherent);
             
-            unEmprunt.setIdLivre(unLivre);
-            unEmprunt.setIdAdherent(unAdherent);
+            while(!unLivre.getEtatLivre().equalsIgnoreCase("Emprunter")){
+	            
+            	unEmprunt.setIdLivre(unLivre);
+	            unEmprunt.setIdAdherent(unAdherent);
+	            
+	            unLivre.setEtatLivre("Emprunter");
+	
+	            em.persist(unEmprunt);
+	            
+	            creation = true ;
+	            
+	            this.incrementerNbLivreEmprunter(idAdherent, 
+	                    unAdherent.incrementerVariableNbLivreEmprunter());
+	            
+	            em.flush();
+	            
+	            tx.commit();
             
-            unLivre.setEtatLivre("Emprunter");
-
-            em.persist(unEmprunt);
-            
-            creation = true ;
-            
-            this.incrementerNbLivreEmprunter(idAdherent, 
-                    unAdherent.incrementerVariableNbLivreEmprunter());
-            
-            em.flush();
-            
-            tx.commit();
+            }
         
             if(em != null){
             
@@ -604,4 +612,56 @@ public class ModeleJpa {
 
         return listeDesLivresEmprunter ;
     }
+    
+    /**
+     * Emprunter Un  ou plusieurs Livres
+     * @param idLivre
+     * @param idAdherent
+     * @return 
+     */
+    public boolean emprunterDesLivres(int idAdherent, int idLivre){
+            
+            System.out.println("GestionJpa::emprunterDesLivres()");
+            boolean creation = false ;
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionJpaPU");
+            EntityManager em = emf.createEntityManager();
+            Livre unLivre = null;
+            Adherent unAdherent = null ;
+            
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
+            
+            unLivre = em.getReference(entities.Livre.class, idLivre);
+            unAdherent = em.getReference(entities.Adherent.class, idAdherent);
+            
+            Set<Livre> lesLivres = new HashSet();
+            lesLivres.add(unLivre);
+            
+	        unLivre.setEtatLivre("Encore Disponible");
+	        
+	        unAdherent.setLesLivres(lesLivres);
+	
+	        em.persist(unAdherent);
+	            
+	        creation = true ;
+	        
+	        this.incrementerNbLivreEmprunter(idAdherent,unAdherent.incrementerVariableNbLivreEmprunter());
+	       
+	        em.flush();
+	            
+	        tx.commit();
+
+            if(em != null){
+            
+                em.close();
+            }
+            
+            if(emf != null){
+                
+                emf.close();
+            }
+        
+        return creation ;
+        
+        }
 }

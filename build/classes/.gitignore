@@ -1,5 +1,4 @@
-/META-INF/
-/controller/
-/entities/
+/dao/
 /modele/
 /test/
+/entities/

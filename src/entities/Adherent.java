@@ -2,12 +2,15 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -42,9 +45,8 @@ public class Adherent implements Serializable {
     @Column(name = "nbLivreEmprunter")
     private int nbLivreEmprunter;
     
-//    @JoinColumn(name = "idLivre", referencedColumnName = "idLivre")
-//    @OneToOne(optional = false)
-//    private Livre idLivre;
+    @ManyToMany(targetEntity = Livre.class)
+    private Set<Livre> lesLivres ;
 
     public Adherent() {
     }
@@ -105,29 +107,23 @@ public class Adherent implements Serializable {
         this.nbLivreEmprunter = nbLivreEmprunter;
     }
     
-//        /**
-//     * @return the idLivre
-//     */
-//    public Livre getIdLivre() {
-//        return idLivre;
-//    }
-//
-//    /**
-//     * @param idLivre the idLivre to set
-//     */
-//    public void setIdLivre(Livre idLivre) {
-//        this.idLivre = idLivre;
-//    }
     
-    
-
-    @Override
-    public String toString() {
-        return "Adherent{" + "nom=" + nom + ", prenom=" + prenom 
-                + ", nbLivreEmprunter=" + nbLivreEmprunter + '}';
-    }
     
     /**
+	 * @return the lesLivres
+	 */
+	public Set<Livre> getLesLivres() {
+		return lesLivres;
+	}
+
+	/**
+	 * @param lesLivres the lesLivres to set
+	 */
+	public void setLesLivres(Set<Livre> lesLivres) {
+		this.lesLivres = lesLivres;
+	}
+
+	/**
      * Incrémenter le nombre de Livres d'un Adhérent lorsqu'il emprunte un Livre
      * @return 
      */
